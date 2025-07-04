@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useEffect, useState } from "react";
 import { createBlog } from "./actions";
 import { useOrganization, OrganizationProfile } from "@clerk/nextjs";
-import { useUser } from "@clerk/nextjs";
 import {
   Sheet,
   SheetContent,
@@ -24,7 +23,6 @@ export default function Organization({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { user } = useUser();
   const selectedOrg = useOrganization();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
