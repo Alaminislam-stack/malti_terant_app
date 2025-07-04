@@ -1,7 +1,7 @@
 "use client";
-import { CreateOrganization, OrganizationList, OrganizationSwitcher } from "@clerk/nextjs";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { OrganizationList} from "@clerk/nextjs";
+
+import React from "react";
 
 type Organization = {
   id: string;

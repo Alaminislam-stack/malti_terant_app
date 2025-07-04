@@ -2,9 +2,9 @@ import { db } from "@/db";
 import { blogTable } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: any) {
+export async function GET(request: NextRequest) {
   try {
     // slug query parameter theke nite hobe
     const { searchParams } = new URL(request.url);
