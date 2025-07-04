@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 
 async function Subdomain({ params }: { params: { subdomain: string } }) {
-  const subdomain = await params.subdomain;
+  const { subdomain } = params;
   const client = await clerkClient();
   const org = await client.organizations.getOrganization({ slug: subdomain });
   const orgId = org?.id;
