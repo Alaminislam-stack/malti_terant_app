@@ -1,28 +1,30 @@
+import React from "react";
 import { db } from '@/db';
 import { blogTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import React from 'react'
- // import the delete action
 import { redirect } from 'next/navigation';
 import { deleteBlog } from '../actions';
 
-async function Blog({ params }: {
-  params: { blogId: string; slug: string };
+export default async function Blog({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ blogId: string; slug: string }>;
   searchParams?: { [key: string]: string | string[] | undefined };
-}) { 
-  const blogId = params.blogId
+}) {
+  const { blogId, slug } = React.use(params);
 
   const blog = await db
     .select()
     .from(blogTable)
     .where(eq(blogTable.id, blogId));
-  
+
   const blogData = blog[0];
 
   async function handleDelete() {
     "use server";
     await deleteBlog(blogId);
-    redirect(`/org/${params.slug}`);
+    redirect(`/org/${slug}`);
   }
 
   return (
@@ -40,7 +42,5 @@ async function Blog({ params }: {
         </button>
       </form>
     </div>
-  )
+  );
 }
-
-export default Blog

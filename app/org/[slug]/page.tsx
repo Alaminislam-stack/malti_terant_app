@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Organization({
   params,
+  searchParams
 }: {
   params: Promise<{ slug: string }>;
   searchParams?: { [key: string]: string | string[] | undefined };
