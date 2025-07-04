@@ -7,12 +7,10 @@ import { deleteBlog } from '../actions';
 
 export default async function Blog({
   params,
-  searchParams,
 }: {
   params: Promise<{ blogId: string; slug: string }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const { blogId, slug } = React.use(params);
+  const { blogId, slug } = await params;
 
   const blog = await db
     .select()

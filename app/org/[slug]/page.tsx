@@ -20,10 +20,8 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Organization({
   params,
-  searchParams
 }: {
   params: Promise<{ slug: string }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const selectedOrg = useOrganization();
   const [title, setTitle] = useState("");
@@ -76,7 +74,7 @@ export default function Organization({
 
   useEffect(() => {
     fetchBlogs();
-  }, [selectedOrg.organization?.slug, fetchBlogs]);
+  }, [selectedOrg.organization?.slug]);
 
   return (
     <div className=" py-10 lg:py-[50px] px-10 lg:px-[200px]">
