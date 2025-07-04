@@ -1,7 +1,7 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
-const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
 const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
 
 function extractSubdomain(request: NextRequest): string | null {
@@ -11,17 +11,13 @@ function extractSubdomain(request: NextRequest): string | null {
 
   // Local development environment
   if (url.includes("localhost") || url.includes("127.0.0.1")) {
-    // Try to extract subdomain from the full URL
     const fullUrlMatch = url.match(/http:\/\/([^.]+)\.localhost/);
     if (fullUrlMatch && fullUrlMatch[1]) {
       return fullUrlMatch[1];
     }
-
-    // Fallback to host header approach
     if (hostname.includes(".localhost")) {
       return hostname.split(".")[0];
     }
-
     return null;
   }
 
@@ -43,25 +39,37 @@ function extractSubdomain(request: NextRequest): string | null {
   return isSubdomain ? hostname.replace(`.${rootDomainFormatted}`, "") : null;
 }
 
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/"]);
+//Only allow public access to sign-in and sign-up
+const isPublicRoute = (pathname: string) =>
+  pathname === "/" ||
+  pathname.startsWith("/sign-in") ||
+  pathname.startsWith("/sign-up") || pathname.startsWith("/s");
 
-export default clerkMiddleware((auth, request) => {
-  const { pathname } = request.nextUrl;
+export default clerkMiddleware(async (auth, request) => {
+  const pathname = request.nextUrl.pathname;
   const subdomain = extractSubdomain(request);
+
+  // Get userId from Clerk
+  const { userId } = await auth();
+
+  if (!isPublicRoute(pathname)) {
+    await auth.protect()
+  }
+
+  // Root page e login thakle dashboard e pathan
+  if (pathname === "/" && userId) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
   if (subdomain) {
     return NextResponse.rewrite(new URL(`/s/${subdomain}`, request.url));
-  }
-
-  // On the root domain, allow normal access
+  } 
   return NextResponse.next();
 });
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
     "/(api|trpc)(.*)",
   ],
 };

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "../globals.css";
+import "./globals.css";
 import { ClerkProvider, SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,23 +28,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ClerkProvider>
           <Navbar />
-          <SignedOut>
-            <div className="flex h-screen items-center justify-center">
-              <SignIn />
-            </div>
-            
-          </SignedOut>
-          <SignedIn>
+
           {children}
-          </SignedIn>
-        </body>
-      </html>
-    </ClerkProvider>
+          <ToastContainer />
+
+          <Footer />
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
