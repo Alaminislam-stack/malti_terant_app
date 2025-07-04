@@ -22,6 +22,7 @@ export default function Organization({
   params,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const selectedOrg = useOrganization();
   const [title, setTitle] = useState("");

@@ -6,7 +6,10 @@ import React from 'react'
 import { redirect } from 'next/navigation';
 import { deleteBlog } from '../actions';
 
-async function Blog({ params }: { params: { blogId: string, slug: string } }) { 
+async function Blog({ params }: {
+  params: { blogId: string; slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) { 
   const blogId = params.blogId
 
   const blog = await db
