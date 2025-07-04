@@ -41,7 +41,7 @@ export default function Organization({
     try {
       await navigator.clipboard.writeText(textToCopy);
       toast.success("Copied to clipboard!");
-    } catch (err) {
+    } catch {
       toast.error("Failed to copy");
     }
   };
@@ -73,8 +73,8 @@ export default function Organization({
   };
 
   useEffect(() => {
-  fetchBlogs();
-}, [selectedOrg.organization?.slug, fetchBlogs]);
+    fetchBlogs();
+  }, [selectedOrg.organization?.slug, fetchBlogs]);
 
   return (
     <div className=" py-10 lg:py-[50px] px-10 lg:px-[200px]">
@@ -83,7 +83,10 @@ export default function Organization({
       </Badge>
       <div className=" flex justify-between text-center bg-gray-300 rounded-full px-5 py-3 mb-10">
         <p>{subdomain} </p>
-        <button onClick={handleCopy} className="cursor-pointer font-semibold hover:text-gray-400">
+        <button
+          onClick={handleCopy}
+          className="cursor-pointer font-semibold hover:text-gray-400"
+        >
           Copy
         </button>
       </div>

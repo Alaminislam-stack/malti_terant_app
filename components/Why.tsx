@@ -37,7 +37,7 @@ function Why() {
             <p className="font-normal text-[#111416] text-base leading-6 font-sans max-w-[720px]">
               Bloggr offers a range of features designed to help you succeed as
               a writer. From powerful writing tools to audience engagement
-              features, we've got you covered.
+              features, we&apos;sve got you covered.
             </p>
           </div>
 
