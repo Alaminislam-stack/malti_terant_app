@@ -17,7 +17,10 @@ export async function GET(request: NextRequest) {
     const org = await client.organizations.getOrganization({ slug });
     const orgId = org?.id;
     if (!orgId) {
-      return NextResponse.json({ error: "Organization not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Organization not found" },
+        { status: 404 }
+      );
     }
 
     const blogs = await db
@@ -29,6 +32,7 @@ export async function GET(request: NextRequest) {
       blogs,
     });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch blogs" },
       { status: 500 }

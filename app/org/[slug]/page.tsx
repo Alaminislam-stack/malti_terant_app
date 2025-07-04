@@ -10,7 +10,6 @@ import { useUser } from "@clerk/nextjs";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -49,7 +48,6 @@ export default function Organization({
     }
   };
 
-  const name = user?.fullName ?? "";
   const handleCreateBlog = async () => {
     if (!selectedOrg.organization?.id) return;
     if (!title || !content) {
@@ -77,8 +75,8 @@ export default function Organization({
   };
 
   useEffect(() => {
-    fetchBlogs();
-  }, [selectedOrg.organization?.slug]);
+  fetchBlogs();
+}, [selectedOrg.organization?.slug, fetchBlogs]);
 
   return (
     <div className=" py-10 lg:py-[50px] px-10 lg:px-[200px]">
