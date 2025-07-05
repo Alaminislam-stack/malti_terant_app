@@ -3,14 +3,16 @@ import { blogTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
 interface Props {
-  params: { subdomain: string; blogId: string };
+  params: Promise<{ blogId: string }>;
 }
-
 export default async function Subblog({ params }: Props) {
+
+  const { blogId } = await params;
+
   const blog = await db
     .select()
     .from(blogTable)
-    .where(eq(blogTable.id, params.blogId));
+    .where(eq(blogTable.id,blogId));
 
   const blogData = blog[0];
 
